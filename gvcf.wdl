@@ -14,8 +14,8 @@ workflow Gvcf {
 
     call biopet.ScatterRegions as scatterList {
         input:
-            ref_fasta = refFasta,
-            ref_dict = refDict,
+            refFasta = refFasta,
+            refDict = refDict,
             outputDirPath = scatterDir
     }
 
