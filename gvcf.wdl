@@ -9,6 +9,8 @@ workflow Gvcf {
     File refFasta
     File refDict
     File refFastaIndex
+    File dbsnpVCF
+    File dbsnpVCFindex
 
     String scatterDir = sub(gvcfPath, basename(gvcfPath), "/scatters/")
 
@@ -28,7 +30,9 @@ workflow Gvcf {
                 refDict = refDict,
                 refFastaIndex = refFastaIndex,
                 inputBams = bamFiles,
-                inputBamsIndex = bamIndexes
+                inputBamsIndex = bamIndexes,
+                dbsnpVCF = dbsnpVCF,
+                dbsnpVCFindex = dbsnpVCFindex
         }
     }
 
