@@ -1,6 +1,6 @@
 organization := "com.github.biopet"
 organizationName := "Biowdl"
-name := "biowdl-bam-to-gvcf"
+name := "bam-to-gvcf"
 
 biopetUrlName := "bam-to-gvcf"
 
