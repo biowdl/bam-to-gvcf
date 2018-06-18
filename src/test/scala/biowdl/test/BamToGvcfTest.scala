@@ -27,13 +27,10 @@ import nl.biopet.utils.biowdl.references.TestReference
 import nl.biopet.utils.biowdl.fixtureFile
 
 trait BamToGvcfSingleEnd extends BamToGvcfSuccess with TestReference {
-  def outputFile: File = new File(outputDir, "test.g.vcf.gz")
+  def outputFile: Option[File] = Some(new File(outputDir, "test.g.vcf.gz"))
   def bamFiles: List[File] = List(fixtureFile("samples", "wgs1", "wgs1.bam"))
-  def dbsnpFile: Option[File] = Some(fixtureFile("samples", "wgs2", "wgs2.vcf.gz"))
+  def dbsnpFile: Option[File] =
+    Some(fixtureFile("samples", "wgs2", "wgs2.vcf.gz"))
 }
 
-class BamToGvcfTest
-    extends BamToGvcfSingleEnd
-    with BamToGvcfSuccess {
-
-}
+class BamToGvcfTest extends BamToGvcfSingleEnd with BamToGvcfSuccess {}

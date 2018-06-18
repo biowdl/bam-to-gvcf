@@ -29,9 +29,19 @@ import nl.biopet.utils.ngs.vcf.getVcfIndexFile
 
 trait BamToGvcf extends Pipeline with Reference {
 
-  def outputFile: File
+  def outputFile: Option[File]
   def bamFiles: List[File]
   def dbsnpFile: Option[File]
+
+  def bamIndexFiles: List[File] = bamFiles.map { bamFile =>
+    val index1 = new File(bamFile.getAbsolutePath + ".bai")
+    val index2 = new File(bamFile.getAbsolutePath.stripSuffix(".bam") + ".bai")
+    (index1.exists(), index2.exists()) match {
+      case (true, _) => index1
+      case (_, true) => index2
+      case _         => throw new IllegalStateException("No index found")
+    }
+  }
 
   override def inputs: Map[String, Any] =
     super.inputs ++
@@ -40,8 +50,10 @@ trait BamToGvcf extends Pipeline with Reference {
         "Gvcf.refFasta" -> referenceFasta.getAbsolutePath,
         "Gvcf.refFastaIndex" -> referenceFastaIndexFile.getAbsolutePath,
         "Gvcf.refDict" -> referenceFastaDictFile.getAbsolutePath,
-        "Gvcf.bamFiles" -> bamFiles.map(_.getAbsolutePath)
+        "Gvcf.bamFiles" -> bamFiles.map(_.getAbsolutePath),
+        "Gvcf.bamIndexes" -> bamIndexFiles.map(_.getAbsolutePath)
       ) ++
+      outputFile.map("Gvcf.gvcfPath" -> _.getAbsolutePath) ++
       dbsnpFile.map("Gvcf.dbsnpVCF" -> _.getAbsolutePath) ++
       dbsnpFile.map("Gvcf.dbsnpVCFindex" -> getVcfIndexFile(_).getAbsolutePath)
 
