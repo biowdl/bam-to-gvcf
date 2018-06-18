@@ -23,4 +23,6 @@ package biowdl.test
 
 import nl.biopet.utils.biowdl.PipelineSuccess
 
-trait BamToGvcfSuccess extends BamToGvcf with PipelineSuccess {}
+trait BamToGvcfSuccess extends BamToGvcf with PipelineSuccess {
+  outputFile.foreach(addMustHaveFile)
+}
