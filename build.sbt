@@ -16,13 +16,13 @@ concurrentRestrictions := Seq(
 
 developers ++= List(
   Developer(id = "ffinfo",
-    name = "Peter van 't Hof",
-    email = "pjrvanthof@gmail.com",
-    url = url("https://github.com/ffinfo")),
+            name = "Peter van 't Hof",
+            email = "pjrvanthof@gmail.com",
+            url = url("https://github.com/ffinfo")),
   Developer(id = "DavyCats",
-    name = "Davy Cats",
-    email = "d.cats@lumc.nl",
-    url = url("https://github.com/DavyCats"))
+            name = "Davy Cats",
+            email = "d.cats@lumc.nl",
+            url = url("https://github.com/DavyCats"))
 )
 
 scalaVersion := "2.11.12"
