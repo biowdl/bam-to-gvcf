@@ -33,4 +33,4 @@ trait BamToGvcfSingleEnd extends BamToGvcfSuccess with TestReference {
     Some(fixtureFile("samples", "wgs2", "wgs2.vcf.gz"))
 }
 
-class BamToGvcfTest extends BamToGvcfSingleEnd with BamToGvcfSuccess {}
+class BamToGvcfTest extends BamToGvcfSingleEnd with BamToGvcfSuccess
