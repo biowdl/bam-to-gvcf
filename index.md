@@ -39,6 +39,11 @@ Type is indicated according to the WDL data types: `File` should be indicators
 of file location (a string in JSON). Types ending in `?` indicate the input is
 optional, types ending in `+` indicate they require at least one element.
 
+## Tool versions
+Included in the repository is an `environment.yml` file. This file includes
+all the tool version on which the workflow was tested. You can use conda and
+this file to create an environment with all the correct tools.
+
 ## output
 A GVCF file at the specified location and its index.
 
