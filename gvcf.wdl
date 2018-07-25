@@ -1,16 +1,20 @@
+version 1.0
+
 import "tasks/gatk.wdl" as gatk
 import "tasks/biopet.wdl" as biopet
 import "tasks/picard.wdl" as picard
 
 workflow Gvcf {
-    Array[File] bamFiles
-    Array[File] bamIndexes
-    String gvcfPath
-    File refFasta
-    File refDict
-    File refFastaIndex
-    File dbsnpVCF
-    File dbsnpVCFindex
+    input {
+        Array[File] bamFiles
+        Array[File] bamIndexes
+        String gvcfPath
+        File refFasta
+        File refDict
+        File refFastaIndex
+        File dbsnpVCF
+        File dbsnpVCFindex
+    }
 
     String scatterDir = sub(gvcfPath, basename(gvcfPath), "/scatters/")
 
