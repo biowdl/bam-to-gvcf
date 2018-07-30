@@ -1,6 +1,6 @@
-# wdl-gvcf
+# bam-to-gvcf
 
-This repository contains a[Biowdl](https://github.com/biowdl) 
+This repository contains a [Biowdl](https://github.com/biowdl) 
 workflows which uses Haplotypecaller to perform variantcalling.
 
 ## Documentation
