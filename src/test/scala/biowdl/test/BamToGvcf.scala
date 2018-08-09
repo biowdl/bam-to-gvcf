@@ -46,7 +46,6 @@ trait BamToGvcf extends Pipeline with Reference {
   override def inputs: Map[String, Any] =
     super.inputs ++
       Map(
-        "Gvcf.outputDir" -> outputDir.getAbsolutePath,
         "Gvcf.refFasta" -> referenceFasta.getAbsolutePath,
         "Gvcf.refFastaIndex" -> referenceFastaIndexFile.getAbsolutePath,
         "Gvcf.refDict" -> referenceFastaDictFile.getAbsolutePath,
