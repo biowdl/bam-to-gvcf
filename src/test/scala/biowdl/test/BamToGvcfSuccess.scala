@@ -24,7 +24,6 @@ package biowdl.test
 import nl.biopet.utils.biowdl.PipelineSuccess
 import nl.biopet.utils.ngs.intervals.BedRecord
 import nl.biopet.utils.ngs.vcf.loadRegion
-
 import org.testng.annotations.Test
 
 trait BamToGvcfSuccess extends BamToGvcf with PipelineSuccess {
@@ -36,11 +35,10 @@ trait BamToGvcfSuccess extends BamToGvcf with PipelineSuccess {
       val outputVariants = loadRegion(out, BedRecord("chr1", 1, 16000))
       val truthVariants = loadRegion(dbsnpFile.get, BedRecord("chr1", 1, 16000))
       truthVariants.foreach(v => {
-        val exists = outputVariants.exists(
-          v2 =>
-            v.getStart == v2.getStart & v.getEnd == v2.getEnd & v.getAlleles
-              .equals(v2.getAlleles)
-        )
+        val exists = outputVariants.exists({ v2 =>
+          v.getStart == v2.getStart & v.getEnd == v2.getEnd & v2.getAlleles
+            .containsAll(v.getAlleles)
+        })
         assert(exists)
       })
     })
