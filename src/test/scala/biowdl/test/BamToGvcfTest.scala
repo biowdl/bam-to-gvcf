@@ -28,7 +28,8 @@ import nl.biopet.utils.biowdl.fixtureFile
 
 trait BamToGvcfSingleEnd extends BamToGvcfSuccess with TestReference {
   def outputFile: Option[File] = Some(new File(outputDir, "test.g.vcf.gz"))
-  def bamFiles: List[File] = List(fixtureFile("samples", "wgs1", "wgs1.bam"))
+  def bamFiles: List[File] =
+    List(fixtureFile("samples", "wgs2", "wgs2.realign.bam"))
   def dbsnpFile: Option[File] =
     Some(fixtureFile("samples", "wgs2", "wgs2.vcf.gz"))
 }

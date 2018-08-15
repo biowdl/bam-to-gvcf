@@ -1,4 +1,4 @@
-name: multsample
+name: bam-to-gvcf
 channels:
   - bioconda
   - conda-forge
