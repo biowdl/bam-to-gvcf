@@ -46,9 +46,10 @@ trait BamToGvcf extends Pipeline with Reference {
   override def inputs: Map[String, Any] =
     super.inputs ++
       Map(
-        "Gvcf.reference" -> Map("fasta" -> referenceFasta.getAbsolutePath,
-                           "fai" -> referenceFastaIndexFile.getAbsolutePath,
-                           "dict" -> referenceFastaDictFile.getAbsolutePath),
+        "Gvcf.reference" -> Map(
+          "fasta" -> referenceFasta.getAbsolutePath,
+          "fai" -> referenceFastaIndexFile.getAbsolutePath,
+          "dict" -> referenceFastaDictFile.getAbsolutePath),
         "Gvcf.bamFiles" -> bamFiles.zip(bamIndexFiles).map {
           case (b, i) =>
             Map("file" -> b.getAbsolutePath, "index" -> i.getAbsolutePath)
