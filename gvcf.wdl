@@ -1,28 +1,29 @@
 version 1.0
 
 import "tasks/gatk.wdl" as gatk
-import "tasks/biopet.wdl" as biopet
+import "tasks/biopet/biopet.wdl" as biopet
 import "tasks/picard.wdl" as picard
+import "tasks/common.wdl" as common
 
 workflow Gvcf {
     input {
-        Array[File] bamFiles
-        Array[File] bamIndexes
+        Array[IndexedBamFile] bamFiles
         String gvcfPath
-        File refFasta
-        File refDict
-        File refFastaIndex
-        File dbsnpVCF
-        File dbsnpVCFindex
+        Reference reference
+        IndexedVcfFile dbsnpVCF
     }
 
     String scatterDir = sub(gvcfPath, basename(gvcfPath), "/scatters/")
 
     call biopet.ScatterRegions as scatterList {
         input:
-            refFasta = refFasta,
-            refDict = refDict,
+            reference = reference,
             outputDirPath = scatterDir
+    }
+
+    scatter (f in bamFiles) {
+        File files = f.file
+        File indexes = f.index
     }
 
     scatter (bed in scatterList.scatters) {
@@ -30,25 +31,24 @@ workflow Gvcf {
             input:
                 gvcfPath = scatterDir + "/" + basename(bed) + ".vcf.gz",
                 intervalList = [bed],
-                refFasta = refFasta,
-                refDict = refDict,
-                refFastaIndex = refFastaIndex,
-                inputBams = bamFiles,
-                inputBamsIndex = bamIndexes,
-                dbsnpVCF = dbsnpVCF,
-                dbsnpVCFindex = dbsnpVCFindex
+                reference = reference,
+                inputBams = files,
+                inputBamsIndex = indexes,
+                dbsnpVCF = dbsnpVCF
         }
+
+        File gvcfFiles = haplotypeCallerGvcf.outputGVCF.file
+        File gvcfIndex = haplotypeCallerGvcf.outputGVCF.index
     }
 
     call picard.MergeVCFs as gatherGvcfs {
         input:
-            inputVCFs = haplotypeCallerGvcf.outputGVCF,
-            inputVCFsIndexes = haplotypeCallerGvcf.outputGVCFindex,
-            outputVCFpath = gvcfPath
+            inputVCFs = gvcfFiles,
+            inputVCFsIndexes = gvcfIndex,
+            outputVcfPath = gvcfPath
     }
 
     output {
-        File outputGVCF = gatherGvcfs.outputVCF
-        File outputGVCFindex = gatherGvcfs.outputVCFindex
+        IndexedVcfFile outputGVcf = gatherGvcfs.outputVcf
     }
 }
