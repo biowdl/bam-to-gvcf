@@ -8,3 +8,4 @@ dependencies:
   - gatk4==4.0.4.0
   - picard==2.18.7
   - biopet-scatterregions==0.1
+  - tabix==0.2.6
