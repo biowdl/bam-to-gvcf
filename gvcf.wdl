@@ -13,6 +13,7 @@ workflow Gvcf {
         Reference reference
         IndexedVcfFile dbsnpVCF
 
+        File? regions
         Int scatterSize = 10000000
     }
 
@@ -22,7 +23,8 @@ workflow Gvcf {
         input:
             reference = reference,
             outputDirPath = scatterDir,
-            scatterSize = scatterSize
+            scatterSize = scatterSize,
+            regions = regions
     }
 
     # Glob messes with order of scatters (10 comes before 1), which causes problems at gatherGvcfs
