@@ -1,0 +1,12 @@
+- name: single_end
+  tags:
+    - integration
+  command: >-
+    bash -c '
+    TEST_JSON=tests/integration/single_end.json ;
+    sed -i "2i\"Gvcf.outputDir\":\"$PWD/test-output\"," $TEST_JSON ;
+    cromwell run -i $TEST_JSON gvcf.wdl'
+  stdout:
+    contains:
+      - "WorkflowSucceededState"
+  files: []
