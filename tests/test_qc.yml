@@ -4,9 +4,10 @@
   command: >-
     bash -c '
     TEST_JSON=tests/integration/single_end.json ;
-    sed -i "2i\"Gvcf.gvcfPath\":\"$PWD/test.vcf.gz\"," $TEST_JSON ;
+    sed -i "2i\"Gvcf.gvcfPath\":\"$PWD/test.g.vcf.gz\"," $TEST_JSON ;
     cromwell run -i $TEST_JSON gvcf.wdl'
   stdout:
     contains:
       - "WorkflowSucceededState"
-  files: []
+  files:
+    - path: test.g.vcf.gz

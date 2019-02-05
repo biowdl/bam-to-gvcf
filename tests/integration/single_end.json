@@ -10,6 +10,6 @@
   },
   "Gvcf.dbsnpVCF": {
     "file": "tests/data/wgs2.vcf.gz",
-    "index": "test/data/wgs2.vcf.gz.tbi"
+    "index": "tests/data/wgs2.vcf.gz.tbi"
   }
 }
