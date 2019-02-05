@@ -11,3 +11,4 @@
       - "WorkflowSucceededState"
   files:
     - path: test.g.vcf.gz
+  # TODO: Add the variant testing from scala
