@@ -42,4 +42,3 @@
         - "chr1	14000	.	A	C"
         - "chr1	14500	.	A	G"
         - "chr1	15000	.	T	G"
-  # TODO: Add the variant testing from scala
