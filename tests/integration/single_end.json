@@ -1,0 +1,15 @@
+{
+  "Gvcf.bamFiles": [
+    {"file": "tests/data/wgs2.realign.bam",
+    "index":  "tests/data/wgs2.realign.bai"}
+  ],
+  "Gvcf.reference": {
+    "fasta": "tests/data/reference.fasta",
+    "fai": "tests/data/reference.fasta.fai",
+    "dict": "tests/data/reference.dict"
+  },
+  "Gvcf.dbsnpVCF": {
+    "file": "tests/data/wgs2.vcf.gz",
+    "index": "tests/data/wgs2.vcf.gz.tbi"
+  }
+}
