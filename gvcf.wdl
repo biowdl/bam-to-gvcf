@@ -15,6 +15,11 @@ workflow Gvcf {
 
         File? regions
         Int scatterSize = 10000000
+        Map[String, String] dockerTags = {
+          "samtools":"1.8--h46bd0b3_5",
+          "picard":"2.18.26--0",
+          "gatk":"3.8--5"
+        }
     }
 
     String scatterDir = sub(gvcfPath, basename(gvcfPath), "/scatters/")
@@ -47,7 +52,8 @@ workflow Gvcf {
                 reference = reference,
                 inputBams = files,
                 inputBamsIndex = indexes,
-                dbsnpVCF = dbsnpVCF
+                dbsnpVCF = dbsnpVCF,
+                dockerTag = dockerTags["gatk"]
         }
 
         File gvcfFiles = haplotypeCallerGvcf.outputGVCF.file
@@ -58,12 +64,14 @@ workflow Gvcf {
         input:
             inputVcfs = gvcfFiles,
             inputVcfIndexes = gvcfIndex,
-            outputVcfPath = gvcfPath
+            outputVcfPath = gvcfPath,
+            dockerTag = dockerTags["picard"]
     }
 
     call samtools.Tabix as indexGatheredGvcfs {
         input:
-            inputFile = gatherGvcfs.outputVcf
+            inputFile = gatherGvcfs.outputVcf,
+            dockerTag = dockerTags["samtools"]
     }
 
     output {
