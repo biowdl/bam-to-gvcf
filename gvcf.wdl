@@ -18,7 +18,8 @@ workflow Gvcf {
         Map[String, String] dockerTags = {
           "samtools":"1.8--h46bd0b3_5",
           "picard":"2.18.26--0",
-          "gatk":"3.8--5"
+          "gatk":"3.8--5",
+          "biopet-scatterregions": "0.2--0"
         }
     }
 
@@ -29,7 +30,8 @@ workflow Gvcf {
             reference = reference,
             outputDirPath = scatterDir,
             scatterSize = scatterSize,
-            regions = regions
+            regions = regions,
+            dockerTag = dockerTags["biopet-scatterregions"]
     }
 
     # Glob messes with order of scatters (10 comes before 1), which causes problems at gatherGvcfs
@@ -37,6 +39,8 @@ workflow Gvcf {
         input:
             scatters = scatterList.scatters,
             scatterDir = scatterDir
+            # Dockertag not relevant here. Python script always runs in the same
+            # python container.
     }
 
     scatter (f in bamFiles) {
