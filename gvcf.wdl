@@ -19,7 +19,8 @@ workflow Gvcf {
           "samtools":"1.8--h46bd0b3_5",
           "picard":"2.18.26--0",
           "gatk4":"4.1.0.0--0",
-          "biopet-scatterregions": "0.2--0"
+          "biopet-scatterregions": "0.2--0",
+          "tabix": "0.2.6--ha92aebf_0"
         }
     }
 
@@ -73,7 +74,7 @@ workflow Gvcf {
     call samtools.Tabix as indexGatheredGvcfs {
         input:
             inputFile = gatherGvcfs.outputVcf,
-            dockerTag = dockerTags["samtools"]
+            dockerTag = dockerTags["tabix"]
     }
 
     output {
