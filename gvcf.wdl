@@ -18,7 +18,7 @@ workflow Gvcf {
         Map[String, String] dockerTags = {
           "samtools":"1.8--h46bd0b3_5",
           "picard":"2.18.26--0",
-          "gatk":"3.8--5",
+          "gatk4":"4.1.0.0--0",
           "biopet-scatterregions": "0.2--0"
         }
     }
@@ -56,7 +56,7 @@ workflow Gvcf {
                 inputBams = files,
                 inputBamsIndex = indexes,
                 dbsnpVCF = dbsnpVCF,
-                dockerTag = dockerTags["gatk"]
+                dockerTag = dockerTags["gatk4"]
         }
 
         File gvcfFiles = haplotypeCallerGvcf.outputGVCF.file
