@@ -23,7 +23,7 @@ workflow Gvcf {
         }
     }
 
-    String scatterDir = sub(gvcfPath, basename(gvcfPath), "/scatters/")
+    String scatterDir = sub(gvcfPath, basename(gvcfPath), "scatters/")
 
     call biopet.ScatterRegions as scatterList {
         input:
@@ -37,7 +37,6 @@ workflow Gvcf {
     call biopet.ReorderGlobbedScatters as orderedScatters {
         input:
             scatters = scatterList.scatters,
-            scatterDir = scatterList.scatterDir
             # Dockertag not relevant here. Python script always runs in the same
             # python container.
     }
