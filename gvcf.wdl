@@ -28,7 +28,6 @@ workflow Gvcf {
     call biopet.ScatterRegions as scatterList {
         input:
             reference = reference,
-            outputDirPath = scatterDir,
             scatterSize = scatterSize,
             regions = regions,
             dockerTag = dockerTags["biopet-scatterregions"]
@@ -38,7 +37,7 @@ workflow Gvcf {
     call biopet.ReorderGlobbedScatters as orderedScatters {
         input:
             scatters = scatterList.scatters,
-            scatterDir = scatterDir
+            scatterDir = scatterList.scatterDir
             # Dockertag not relevant here. Python script always runs in the same
             # python container.
     }
