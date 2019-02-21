@@ -10,6 +10,7 @@
     contains:
       - "WorkflowSucceededState"
   files:
+    - path: test.g.vcf.gz.tbi
     - path: test.g.vcf.gz
       contains:
         - "chr1	500	.	C	T"

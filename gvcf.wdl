@@ -15,23 +15,31 @@ workflow Gvcf {
 
         File? regions
         Int scatterSize = 10000000
+        Map[String, String] dockerTags = {
+          "samtools":"1.8--h46bd0b3_5",
+          "picard":"2.18.26--0",
+          "gatk4":"4.1.0.0--0",
+          "biopet-scatterregions": "0.2--0",
+          "tabix": "0.2.6--ha92aebf_0"
+        }
     }
 
-    String scatterDir = sub(gvcfPath, basename(gvcfPath), "/scatters/")
+    String scatterDir = sub(gvcfPath, basename(gvcfPath), "scatters/")
 
     call biopet.ScatterRegions as scatterList {
         input:
             reference = reference,
-            outputDirPath = scatterDir,
             scatterSize = scatterSize,
-            regions = regions
+            regions = regions,
+            dockerTag = dockerTags["biopet-scatterregions"]
     }
 
     # Glob messes with order of scatters (10 comes before 1), which causes problems at gatherGvcfs
     call biopet.ReorderGlobbedScatters as orderedScatters {
         input:
             scatters = scatterList.scatters,
-            scatterDir = scatterDir
+            # Dockertag not relevant here. Python script always runs in the same
+            # python container.
     }
 
     scatter (f in bamFiles) {
@@ -47,7 +55,8 @@ workflow Gvcf {
                 reference = reference,
                 inputBams = files,
                 inputBamsIndex = indexes,
-                dbsnpVCF = dbsnpVCF
+                dbsnpVCF = dbsnpVCF,
+                dockerTag = dockerTags["gatk4"]
         }
 
         File gvcfFiles = haplotypeCallerGvcf.outputGVCF.file
@@ -58,12 +67,14 @@ workflow Gvcf {
         input:
             inputVcfs = gvcfFiles,
             inputVcfIndexes = gvcfIndex,
-            outputVcfPath = gvcfPath
+            outputVcfPath = gvcfPath,
+            dockerTag = dockerTags["picard"]
     }
 
     call samtools.Tabix as indexGatheredGvcfs {
         input:
-            inputFile = gatherGvcfs.outputVcf
+            inputFile = gatherGvcfs.outputVcf,
+            dockerTag = dockerTags["tabix"]
     }
 
     output {

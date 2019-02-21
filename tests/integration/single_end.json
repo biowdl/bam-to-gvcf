@@ -11,5 +11,6 @@
   "Gvcf.dbsnpVCF": {
     "file": "tests/data/wgs2.vcf.gz",
     "index": "tests/data/wgs2.vcf.gz.tbi"
-  }
+  },
+  "Gvcf.scatterSize": 10000
 }
