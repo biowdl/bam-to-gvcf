@@ -74,12 +74,13 @@ workflow Gvcf {
     call samtools.Tabix as indexGatheredGvcfs {
         input:
             inputFile = gatherGvcfs.outputVcf,
+            outputFilePath = gvcfPath,
             dockerTag = dockerTags["tabix"]
     }
 
     output {
         IndexedVcfFile outputGVcf = object {
-            file: gatherGvcfs.outputVcf,
+            file: indexGatheredGvcfs.indexedFile,
             index: indexGatheredGvcfs.index
         }
     }
