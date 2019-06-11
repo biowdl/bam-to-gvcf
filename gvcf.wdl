@@ -52,21 +52,22 @@ workflow Gvcf {
             input:
                 gvcfPath = scatterDir + "/" + basename(bed) + ".vcf.gz",
                 intervalList = [bed],
-                reference = reference,
+                referenceFasta = reference.fasta,
+                referenceFastaIndex = reference.fai,
+                referenceFastaDict = reference.dict,
                 inputBams = files,
                 inputBamsIndex = indexes,
-                dbsnpVCF = dbsnpVCF,
+                dbsnpVCF = dbsnpVCF.file,
+                dbsnpVCFIndex = dbsnpVCF.index,
                 dockerTag = dockerTags["gatk4"]
         }
 
-        File gvcfFiles = haplotypeCallerGvcf.outputGVCF.file
-        File gvcfIndex = haplotypeCallerGvcf.outputGVCF.index
     }
 
     call picard.GatherVcfs as gatherGvcfs {
         input:
-            inputVcfs = gvcfFiles,
-            inputVcfIndexes = gvcfIndex,
+            inputVcfs = haplotypeCallerGvcf.outputGVCF,
+            inputVcfIndexes = haplotypeCallerGvcf.outputGVCFIndex,
             outputVcfPath = gvcfPath,
             dockerTag = dockerTags["picard"]
     }
@@ -74,12 +75,13 @@ workflow Gvcf {
     call samtools.Tabix as indexGatheredGvcfs {
         input:
             inputFile = gatherGvcfs.outputVcf,
+            outputFilePath = gvcfPath,
             dockerTag = dockerTags["tabix"]
     }
 
     output {
         IndexedVcfFile outputGVcf = object {
-            file: gatherGvcfs.outputVcf,
+            file: indexGatheredGvcfs.indexedFile,
             index: indexGatheredGvcfs.index
         }
     }
