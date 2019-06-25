@@ -14,7 +14,7 @@ workflow Gvcf {
         IndexedVcfFile dbsnpVCF
 
         File? regions
-        Int scatterSize = 10000000
+        Int scatterSize = 1000000000
         Map[String, String] dockerTags = {
           "samtools":"1.8--h46bd0b3_5",
           "picard":"2.18.26--0",
