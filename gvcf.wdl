@@ -85,7 +85,7 @@ workflow Gvcf {
     }
 
     output {
-        File outputVcf = indexGatheredGvcfs.indexedFile
-        File outputVcfIndex = indexGatheredGvcfs.index
+        File outputGVcf = indexGatheredGvcfs.indexedFile
+        File outputGVcfIndex = indexGatheredGvcfs.index
     }
 }
