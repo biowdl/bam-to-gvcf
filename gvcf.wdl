@@ -10,17 +10,20 @@ workflow Gvcf {
     input {
         Array[IndexedBamFile] bamFiles
         String gvcfPath
-        Reference reference
-        IndexedVcfFile dbsnpVCF
+        File referenceFasta
+        File referenceFastaDict
+        File referenceFastaFai
+        File dbsnpVCF
+        File dbsnpVCFIndex
 
         File? regions
         Int scatterSize = 10000000
-        Map[String, String] dockerTags = {
-          "samtools":"1.8--h46bd0b3_5",
-          "picard":"2.18.26--0",
-          "gatk4":"4.1.0.0--0",
-          "biopet-scatterregions": "0.2--0",
-          "tabix": "0.2.6--ha92aebf_0"
+        Map[String, String] dockerImages = {
+          "samtools":"quay.io/biocontainers/samtools:1.8--h46bd0b3_5",
+          "picard":"quay.io/biocontainers/picard:2.18.26--0",
+          "gatk4":"quay.io/biocontainers/gatk4:4.1.0.0--0",
+          "biopet-scatterregions":"quay.io/biocontainers/biopet-scatterregions:0.2--0",
+          "tabix": "quay.io/biocontainers/tabix:0.2.6--ha92aebf_0"
         }
     }
 
@@ -28,10 +31,11 @@ workflow Gvcf {
 
     call biopet.ScatterRegions as scatterList {
         input:
-            reference = reference,
+            referenceFasta = referenceFasta,
+            referenceFastaFai = referenceFastaFai,
             scatterSize = scatterSize,
             regions = regions,
-            dockerTag = dockerTags["biopet-scatterregions"]
+            dockerImage = dockerImages["biopet-scatterregions"]
     }
 
     # Glob messes with order of scatters (10 comes before 1), which causes problems at gatherGvcfs
@@ -52,14 +56,14 @@ workflow Gvcf {
             input:
                 gvcfPath = scatterDir + "/" + basename(bed) + ".vcf.gz",
                 intervalList = [bed],
-                referenceFasta = reference.fasta,
-                referenceFastaIndex = reference.fai,
-                referenceFastaDict = reference.dict,
+                referenceFasta = referenceFasta,
+                referenceFastaIndex = referenceFastaFai,
+                referenceFastaDict = referenceFastaDict,
                 inputBams = files,
                 inputBamsIndex = indexes,
-                dbsnpVCF = dbsnpVCF.file,
-                dbsnpVCFIndex = dbsnpVCF.index,
-                dockerTag = dockerTags["gatk4"]
+                dbsnpVCF = dbsnpVCF,
+                dbsnpVCFIndex = dbsnpVCFIndex,
+                dockerImage = dockerImages["gatk4"]
         }
 
     }
@@ -69,20 +73,18 @@ workflow Gvcf {
             inputVcfs = haplotypeCallerGvcf.outputGVCF,
             inputVcfIndexes = haplotypeCallerGvcf.outputGVCFIndex,
             outputVcfPath = gvcfPath,
-            dockerTag = dockerTags["picard"]
+            dockerImage = dockerImages["picard"]
     }
 
     call samtools.Tabix as indexGatheredGvcfs {
         input:
             inputFile = gatherGvcfs.outputVcf,
             outputFilePath = gvcfPath,
-            dockerTag = dockerTags["tabix"]
+            dockerImage = dockerImages["tabix"]
     }
 
     output {
-        IndexedVcfFile outputGVcf = object {
-            file: indexGatheredGvcfs.indexedFile,
-            index: indexGatheredGvcfs.index
-        }
+        File outputVcf = indexGatheredGvcfs.indexedFile
+        File outputVcfIndex = indexGatheredGvcfs.index
     }
 }
