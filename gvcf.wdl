@@ -10,7 +10,7 @@ workflow Gvcf {
     input {
         Array[IndexedBamFile] bamFiles
         String outputDir = "."
-        String gvcfName = "gvcf"
+        String gvcfName = "gvcf.g.vcf.gz"
         File referenceFasta
         File referenceFastaDict
         File referenceFastaFai
@@ -31,7 +31,7 @@ workflow Gvcf {
     call biopet.ScatterRegions as scatterList {
         input:
             referenceFasta = referenceFasta,
-            referenceFastaFai = referenceFastaFai,
+            referenceFastaDict = referenceFastaDict,
             scatterSize = scatterSize,
             regions = regions,
             dockerImage = dockerImages["biopet-scatterregions"]
@@ -73,14 +73,14 @@ workflow Gvcf {
         input:
             inputVcfs = haplotypeCallerGvcf.outputGVCF,
             inputVcfIndexes = haplotypeCallerGvcf.outputGVCFIndex,
-            outputVcfPath = gvcfPath,
+            outputVcfPath = outputDir + "/"+ gvcfName,
             dockerImage = dockerImages["picard"]
     }
 
     call samtools.Tabix as indexGatheredGvcfs {
         input:
             inputFile = gatherGvcfs.outputVcf,
-            outputFilePath = gvcfPath,
+            outputFilePath = outputDir + "/"+ gvcfName,
             dockerImage = dockerImages["tabix"]
     }
 

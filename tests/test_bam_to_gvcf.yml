@@ -8,8 +8,8 @@
     contains:
       - "WorkflowSucceededState"
   files:
-    - path: test.g.vcf.gz.tbi
-    - path: test.g.vcf.gz
+    - path: test-output/test.g.vcf.gz.tbi
+    - path: test-output/test.g.vcf.gz
       contains:
         - "chr1	500	.	C	T"
         - "chr1	1000	.	A	G"
