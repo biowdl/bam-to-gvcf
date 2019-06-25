@@ -9,7 +9,8 @@ import "tasks/samtools.wdl" as samtools
 workflow Gvcf {
     input {
         Array[IndexedBamFile] bamFiles
-        String gvcfPath
+        String outputDir = "."
+        String gvcfName = "gvcf"
         File referenceFasta
         File referenceFastaDict
         File referenceFastaFai
@@ -26,8 +27,6 @@ workflow Gvcf {
           "tabix": "quay.io/biocontainers/tabix:0.2.6--ha92aebf_0"
         }
     }
-
-    String scatterDir = sub(gvcfPath, basename(gvcfPath), "scatters/")
 
     call biopet.ScatterRegions as scatterList {
         input:
@@ -50,6 +49,8 @@ workflow Gvcf {
         File files = f.file
         File indexes = f.index
     }
+
+    String scatterDir = outputDir + "/scatters/"
 
     scatter (bed in orderedScatters.reorderedScatters) {
         call gatk.HaplotypeCallerGvcf as haplotypeCallerGvcf {
