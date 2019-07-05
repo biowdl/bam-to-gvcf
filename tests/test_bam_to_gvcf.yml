@@ -2,16 +2,14 @@
   tags:
     - integration
   command: >-
-    bash -c '
-    TEST_JSON=tests/integration/single_end.json ;
-    sed -i "2i\"Gvcf.gvcfPath\":\"$PWD/test.g.vcf.gz\"," $TEST_JSON ;
-    cromwell run -i $TEST_JSON gvcf.wdl'
+    cromwell run -o tests/cromwell_options.json
+    -i tests/integration/single_end.json gvcf.wdl
   stdout:
     contains:
       - "WorkflowSucceededState"
   files:
-    - path: test.g.vcf.gz.tbi
-    - path: test.g.vcf.gz
+    - path: test-output/test.g.vcf.gz.tbi
+    - path: test-output/test.g.vcf.gz
       contains:
         - "chr1	500	.	C	T"
         - "chr1	1000	.	A	G"
