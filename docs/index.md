@@ -1,8 +1,6 @@
 ---
 layout: default
 title: Home
-version: develop
-latest: false
 ---
 
 This workflow can be used to generate a GVCF file from BAM files using
