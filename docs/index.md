@@ -23,8 +23,6 @@ Inputs are provided through a JSON file. The minimally required inputs are
 described below and a template containing all possible inputs can be generated
 using Womtool as described in the
 [WOMtool documentation](http://cromwell.readthedocs.io/en/stable/WOMtool/).
-See [this page](/inputs.html) for some additional general notes and information
-about pipeline inputs.
 
 ```json
 {
@@ -33,7 +31,7 @@ about pipeline inputs.
   "Gvcf.referenceFastaDict": "The dict file for the reference fasta",
   "Gvcf.dbsnpVCF": "A dbSNP VCF file",
   "Gvcf.dbsnpVCFIndex": "The index (.tbi) for the dbSNP VCF file",
-  "Gvcf.bamFiles": "A list of input BAM files and their associated indexes",
+  "Gvcf.bamFiles": "A list of input BAM files and their associated indexes"
 }
 ```
 
