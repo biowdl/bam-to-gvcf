@@ -11,8 +11,7 @@ that users understand how the changes affect the new version.
 
 version 1.2.0
 ---------------------------
-+ Increase scattersize to 500 million bases or roughly 7 scatters per
-  human sample.
++ Increase scattersize to 1 billion bases or roughly 3 scatters per sample.
 
 version 1.1.0
 ---------------------------

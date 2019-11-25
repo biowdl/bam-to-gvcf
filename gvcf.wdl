@@ -18,8 +18,8 @@ workflow Gvcf {
         File dbsnpVCFIndex
 
         File? regions
-        # Add a scattersize of 500.000.000 (500 million) bases. Which will result in roughly 7 scatters per genome.
-        Int scatterSize = 500000000
+        # Add a scattersize of 1 billion bases. Which will result in roughly 3 scatters per genome.
+        Int scatterSize = 1000000000
         Map[String, String] dockerImages = {
           "samtools":"quay.io/biocontainers/samtools:1.8--h46bd0b3_5",
           "picard":"quay.io/biocontainers/picard:2.20.5--0",
