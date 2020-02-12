@@ -1,5 +1,8 @@
 # bam-to-gvcf
 
+THIS WORKFLOW IS DEPRECATED. Please use the [gatk-variantcalling](
+https://github.com/biowdl/gatk-variantcalling) workflow.
+
 This repository contains a [Biowdl](https://github.com/biowdl) 
 workflows which uses Haplotypecaller to perform variantcalling.
 
